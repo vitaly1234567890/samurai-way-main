@@ -1,0 +1,15 @@
+.content {
+    grid-area: c;
+    background-color: #7a7ad2;
+}
+
+.mainPhoto {
+    height: 300px;
+    width: 100%;
+}
+
+.Avatar {
+    width: 20%;
+    height: 200px;
+}
+
