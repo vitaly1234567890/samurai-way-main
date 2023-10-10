@@ -1,0 +1,13 @@
+.mainPhoto {
+    height: 300px;
+    width: 100%;
+}
+
+.Avatar {
+    width: 20%;
+    height: 200px;
+}
+
+.description-block {
+    padding: 10px;
+}
