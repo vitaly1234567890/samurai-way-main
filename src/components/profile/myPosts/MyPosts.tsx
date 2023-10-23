@@ -1,8 +1,17 @@
 import React from 'react';
 import s from './MyPosts.module.css'
 import {Post} from "./post/Post";
+import {postsProps} from "../../../index";
 
-export const MyPosts = () => {
+
+export const MyPosts = (props: postsProps) => {
+
+
+    let postsElements = props.posts.map(l =>
+        <Post postname={l.message} likeCounts={l.likesCount}/>
+    )
+
+
     return (
         <div className={s.postsBlock}>
             <h3>My posts</h3>
@@ -13,9 +22,7 @@ export const MyPosts = () => {
                 <button>Add post</button>
             </div>
             <div className={s.posts}>
-                <Post postname={'Hello!!!'} likeCounts={2}/>
-                <Post postname={'How old are you?'} likeCounts={10}/>
-                <Post postname={'Where are you from?'} likeCounts={5}/>
+                { postsElements }
             </div>
 
         </div>
