@@ -5,19 +5,23 @@ import {NavBar} from "./components/navBar/NavBar";
 import {Profile} from "./components/profile/Profile";
 import {Dialogs} from "./components/dialogs/Dialogs";
 import {BrowserRouter, Route} from "react-router-dom";
+import {state} from "./redux/State";
+
+type AppPropsType = {
+    state: state
+}
 
 
+function App(props: AppPropsType) {
 
-
-function App(props: any) {
   return (
       <BrowserRouter>
           <div className='app-wrapper'>
               <Header />
               <NavBar />
               <div className={'app-wrapper-content'}>
-                  <Route path="/dialogs" render={ () => <Dialogs dialogsData={props.dialogsData} messageData={props.messageData}/>}/>
-                  <Route path="/profile" render={ () => <Profile posts={props.posts} />}/>
+                  <Route path="/dialogs" render={ () => <Dialogs dialogs={props.state.messagePage.dialogs} message={props.state.messagePage.message} />}/>
+                  <Route path="/profile" render={ () => <Profile  {...props.state.profilePage}/>}/>
                   {/*<Route path="/news" component={News}/>*/}
                   {/*<Route path="/profile" component={Music}/>*/}
                   {/*<Route path="/profile" component={Settings}/>*/}
