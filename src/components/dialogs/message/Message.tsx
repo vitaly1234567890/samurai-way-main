@@ -5,7 +5,13 @@ type MessageProps = {
     message: string
 }
 export const Message = (props: MessageProps) => {
-    return <div className={s.message}>{props.message}</div>
+    return (
+        <div>
+            <div className={s.message}>{props.message}</div>
+
+        </div>
+
+        )
 }
 
 

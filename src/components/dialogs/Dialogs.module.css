@@ -5,6 +5,11 @@
 
 .dialogsItems {
     padding: 10px;
+
+}
+
+.dialogsItems img {
+    width: 45px;
 }
 
 .dialogsItems .active {
@@ -18,6 +23,7 @@
 .message {
 
 }
+
 
 
 

@@ -1,37 +1,63 @@
+import {rerenderEntireTree} from "../render";
 
-export type post = {
+export type Post = {
     id: number
     message: string
     likesCount: number
 }
 
+
 export type ProfilePage = {
-    posts: post[];
+    posts: Post[];
+    newPostText: string
 }
 
-export type state = {
+export type State = {
     messagePage: MessagePage
     profilePage: ProfilePage
+    sideBar: SideBar
 }
 
-export type dialogsType = {
+export type DialogsType = {
     id: number
     name: string
 }
 
-export type messageType = {
+export type MessageType = {
     id: number
     message: string
 }
 
 
 export type MessagePage = {
-    dialogs: dialogsType[];
-    message: messageType[];
+    dialogs: DialogsType[];
+    message: MessageType[];
+}
+
+export type SideBar = {
+    friends: Friends[]
+}
+
+export type Friends = {
+    id: number
+    name: string
+}
+
+export const addPost = (text: string) => {
+    const newPost: Post = {
+        id: 5, message: state.profilePage.newPostText, likesCount: 0
+    }
+    state.profilePage.posts.push(newPost)
+    rerenderEntireTree(state)
+}
+
+export const updateNewPostText = (newText: string) => {
+    state.profilePage.newPostText = newText
+    rerenderEntireTree(state)
 }
 
 
-export let state = {
+export const state: State = {
     profilePage: {
         posts: [
             {id: 1, message: 'Hello!!!', likesCount: 2},
@@ -39,6 +65,7 @@ export let state = {
             {id: 3, message: 'Where are you from?', likesCount: 5},
 
         ],
+        newPostText: "It-Camasutra"
     },
     messagePage: {
         dialogs: [
@@ -55,5 +82,17 @@ export let state = {
             {id: 3, message: 'Hello!'},
             {id: 4, message: 'yo'},
         ]
+    },
+
+    sideBar: {
+        friends: [
+            {id: 1, name: 'Dimych'},
+            {id: 2, name: 'Andrey'},
+            {id: 3, name: 'Sveta'},
+            {id: 4, name: 'Sasha'},
+            {id: 5, name: 'Victor'},
+            {id: 6, name: 'Valera'},
+        ]
     }
 }
+

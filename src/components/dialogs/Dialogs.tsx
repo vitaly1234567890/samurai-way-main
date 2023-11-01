@@ -5,17 +5,29 @@ import {Message} from "./message/Message";
 import {MessagePage} from "../../redux/State";
 
 
-export const Dialogs = (props: MessagePage) => {
+type DialogsProps = {
+    state: MessagePage
+}
 
-    let dialogsElements = props.dialogs.map(el =>
+export const Dialogs = (props: DialogsProps) => {
+
+    let dialogsElements = props.state.dialogs.map(el =>
         <DialogItem name={el.name} id={el.id}/>
     )
 
 
 
-    let messageElements = props.message.map(el =>
+    let messageElements = props.state.message.map(el =>
         <Message message={el.message}/>
     )
+
+
+    const addNewMessage = React.createRef<HTMLTextAreaElement>()
+    const addMessage = () => {
+        const text = addNewMessage.current ? addNewMessage.current.value : ""
+        alert(text)
+
+    }
 
     return (
         <div className={s.dialogs}>
@@ -24,6 +36,12 @@ export const Dialogs = (props: MessagePage) => {
             </div>
             <div className={s.messages}>
                 {messageElements}
+                <div>
+                    <textarea ref={addNewMessage}></textarea>
+                </div>
+                <div>
+                    <button onClick={ addMessage }>Add message</button>
+                </div>
             </div>
         </div>
     );

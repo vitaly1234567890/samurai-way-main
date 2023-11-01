@@ -1,12 +1,12 @@
 import React from 'react';
 import classes from './Post.module.css'
-import {post} from "../../../../redux/State";
+import {Post} from "../../../../redux/State";
 
 type postPropsType ={
-    posts: post
+    posts: Post
 }
 
-export const Post = (props: postPropsType) => {
+export const Posts = (props: postPropsType) => {
     return (
             <div>
                     <div className={classes.item}>
