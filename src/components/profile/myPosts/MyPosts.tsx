@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ChangeEvent} from 'react';
 import s from './MyPosts.module.css'
 import {Posts} from "./post/Post";
 import {Post} from "../../../redux/State";
@@ -8,6 +8,7 @@ type MyPostsProps = {
     posts: Post[]
     addPost: (postMessage: string) => void
     updateNewPostText: (postMessage: string) => void
+    message: string
 }
 
 export const MyPosts = (props: MyPostsProps) => {
@@ -15,20 +16,13 @@ export const MyPosts = (props: MyPostsProps) => {
         <Posts posts={l} />
     )
 
-
-    const newPostElement  = React.createRef<HTMLTextAreaElement>()
-
     const addPost = () => {
-        if(newPostElement.current) {
-            props.addPost(newPostElement.current.value)
-            newPostElement.current.value = ''
-        }
+            props.addPost(props.message)
+
     }
 
-    const onPostChange = () => {
-        if(newPostElement.current) {
-            props.updateNewPostText(newPostElement.current.value)
-        }
+    const onPostChange = (e:ChangeEvent<HTMLTextAreaElement>) => {
+            props.updateNewPostText(e.currentTarget.value)
     }
 
     return (
@@ -36,8 +30,7 @@ export const MyPosts = (props: MyPostsProps) => {
             <h3>My posts</h3>
             <div>
                 <textarea
-                    ref={newPostElement}
-                    value={newPostElement.current?.value}
+                    value={props.message}
                     onChange={ onPostChange }
                 ></textarea>
             </div>
