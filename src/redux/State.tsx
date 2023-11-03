@@ -50,7 +50,7 @@ export const store: StoreType = {
         }
     },
     rerenderEntireTree() {
-        console.log("State")
+        console.log("State is here")
     },
     addPost () {
         const newPost: Post = {
