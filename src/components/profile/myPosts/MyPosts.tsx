@@ -1,28 +1,29 @@
 import React, {ChangeEvent} from 'react';
 import s from './MyPosts.module.css'
 import {Posts} from "./post/Post";
-import {Post} from "../../../redux/State";
+import {ActionsTypes, addPostActionCreator, changeNewTextActionCreator, Post} from "../../../redux/State";
 
 
 type MyPostsProps = {
     posts: Post[]
-    addPost: (postMessage: string) => void
-    updateNewPostText: (postMessage: string) => void
     message: string
+    dispatch: (action: ActionsTypes) => void
 }
+
+
+
 
 export const MyPosts = (props: MyPostsProps) => {
     let postsElements = props.posts.map(l =>
-        <Posts posts={l} />
+        <Posts posts={l}/>
     )
 
     const addPost = () => {
-            props.addPost(props.message)
-
+        props.dispatch(addPostActionCreator (props.message))
     }
 
-    const onPostChange = (e:ChangeEvent<HTMLTextAreaElement>) => {
-            props.updateNewPostText(e.currentTarget.value)
+    const onPostChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        props.dispatch(changeNewTextActionCreator(e.currentTarget.value))
     }
 
     return (
@@ -31,14 +32,14 @@ export const MyPosts = (props: MyPostsProps) => {
             <div>
                 <textarea
                     value={props.message}
-                    onChange={ onPostChange }
+                    onChange={onPostChange}
                 ></textarea>
             </div>
             <div>
-                <button onClick={ addPost }>Add post</button>
+                <button onClick={addPost}>Add post</button>
             </div>
             <div className={s.posts}>
-                { postsElements }
+                {postsElements}
             </div>
 
         </div>

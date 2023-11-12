@@ -26,7 +26,7 @@ export const Dialogs = (props: DialogsProps) => {
         props.addMessage(props.messageText)
     }
 
-    const onChangeMessage = (e: ChangeEvent<HTMLTextAreaElement>)=> props.updateMessage(e.currentTarget.value)
+    const onChangeMessage = (e: ChangeEvent<HTMLTextAreaElement>) => props.updateMessage(e.currentTarget.value)
 
     return (
         <div className={s.dialogs}>
@@ -39,7 +39,7 @@ export const Dialogs = (props: DialogsProps) => {
                     <textarea value={props.messageText} onChange={onChangeMessage}></textarea>
                 </div>
                 <div>
-                    <button onClick={ addMessage }>Add message</button>
+                    <button onClick={addMessage}>Add message</button>
                 </div>
             </div>
         </div>

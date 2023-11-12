@@ -1,12 +1,29 @@
 export type StoreType = {
     _state: State
-    updateNewPostText: (newText: string) => void
     rerenderEntireTree: () => void
-    addPost: () => void
     addMessage: () => void
     updateMessage: (newMes: string) => void
-    subscribe: (observer: ()=>void) => void
+    subscribe: (observer: () => void) => void
     getState: () => State
+    dispatch: (action: ActionsTypes) => void
+}
+
+export type ActionsTypes =
+    ReturnType<typeof addPostActionCreator>
+    | ReturnType<typeof changeNewTextActionCreator>
+
+export const addPostActionCreator = (newPostText: string) => {
+    return {
+        type: "ADD-POST",
+        newPostText: newPostText
+    } as const
+}
+
+export const changeNewTextActionCreator = (newText: string)=> {
+    return {
+        type: "CHANGE-NEW-TEXT",
+        newText: newText
+    } as const
 }
 
 export const store: StoreType = {
@@ -52,18 +69,6 @@ export const store: StoreType = {
     rerenderEntireTree() {
         console.log("State is here")
     },
-    addPost () {
-        const newPost: Post = {
-            id: 5, message: this._state.profilePage.newPostText, likesCount: 0
-        }
-        this._state.profilePage.posts.push(newPost)
-        this._state.profilePage.newPostText = ""
-        this.rerenderEntireTree()
-    },
-    updateNewPostText (newText: string) {
-        this._state.profilePage.newPostText = newText
-        this.rerenderEntireTree()
-    },
     addMessage() {
         const newMessage: MessageType = {
             id: 5, message: this._state.messagePage.newMessage
@@ -76,14 +81,26 @@ export const store: StoreType = {
         this._state.messagePage.newMessage = newMes
         this.rerenderEntireTree()
     },
-    subscribe (observer){
+    subscribe(observer) {
         this.rerenderEntireTree = observer
     },
     getState() {
         return this._state
     },
+    dispatch(action) {
+        if (action.type === "ADD-POST") {
+            const newPost: Post = {
+                id: 5, message: this._state.profilePage.newPostText, likesCount: 0
+            }
+            this._state.profilePage.posts.push(newPost)
+            this._state.profilePage.newPostText = ""
+            this.rerenderEntireTree()
+        } else if (action.type === "CHANGE-NEW-TEXT") {
+            this._state.profilePage.newPostText = action.newText
+            this.rerenderEntireTree()
+        }
+    }
 }
-
 
 
 export type Post = {
@@ -91,7 +108,6 @@ export type Post = {
     message: string
     likesCount: number
 }
-
 
 export type ProfilePage = {
     posts: Post[];
@@ -113,7 +129,6 @@ export type MessageType = {
     id: number
     message: string
 }
-
 
 export type MessagePage = {
     dialogs: DialogsType[];
