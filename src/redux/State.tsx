@@ -1,3 +1,7 @@
+import profileReducer, {addPostActionCreator, changeNewTextActionCreator} from "./profile-reducer";
+import dialogsReducer, {sendMessageActionCreator, updateNewMessageBodyActionCreator} from "./dialog-reducer";
+import sidebarReducer from "./sidebar-reducer";
+
 export type StoreType = {
     _state: State
     rerenderEntireTree: () => void
@@ -11,20 +15,9 @@ export type StoreType = {
 export type ActionsTypes =
     ReturnType<typeof addPostActionCreator>
     | ReturnType<typeof changeNewTextActionCreator>
+    | ReturnType<typeof updateNewMessageBodyActionCreator>
+    | ReturnType<typeof sendMessageActionCreator>
 
-export const addPostActionCreator = (newPostText: string) => {
-    return {
-        type: "ADD-POST",
-        newPostText: newPostText
-    } as const
-}
-
-export const changeNewTextActionCreator = (newText: string)=> {
-    return {
-        type: "CHANGE-NEW-TEXT",
-        newText: newText
-    } as const
-}
 
 export const store: StoreType = {
     _state: {
@@ -35,7 +28,7 @@ export const store: StoreType = {
                 {id: 3, message: 'Where are you from?', likesCount: 5},
 
             ],
-            newPostText: "It-Camasutra"
+            newPostText: ""
         },
         messagePage: {
             dialogs: [
@@ -52,7 +45,7 @@ export const store: StoreType = {
                 {id: 3, message: 'Hello!'},
                 {id: 4, message: 'yo'},
             ],
-            newMessage: ""
+            newMessageBody: ""
         },
 
         sideBar: {
@@ -71,14 +64,14 @@ export const store: StoreType = {
     },
     addMessage() {
         const newMessage: MessageType = {
-            id: 5, message: this._state.messagePage.newMessage
+            id: 5, message: this._state.messagePage.newMessageBody
         }
         this._state.messagePage.message.push(newMessage)
-        this._state.messagePage.newMessage = ""
+        this._state.messagePage.newMessageBody = ""
         this.rerenderEntireTree()
     },
     updateMessage(newMes: string) {
-        this._state.messagePage.newMessage = newMes
+        this._state.messagePage.newMessageBody = newMes
         this.rerenderEntireTree()
     },
     subscribe(observer) {
@@ -88,17 +81,11 @@ export const store: StoreType = {
         return this._state
     },
     dispatch(action) {
-        if (action.type === "ADD-POST") {
-            const newPost: Post = {
-                id: 5, message: this._state.profilePage.newPostText, likesCount: 0
-            }
-            this._state.profilePage.posts.push(newPost)
-            this._state.profilePage.newPostText = ""
+        this._state.profilePage = profileReducer(this._state.profilePage, action)
+        this._state.messagePage = dialogsReducer(this._state.messagePage, action)
+        this._state.sideBar = sidebarReducer(this._state.sideBar, action)
+
             this.rerenderEntireTree()
-        } else if (action.type === "CHANGE-NEW-TEXT") {
-            this._state.profilePage.newPostText = action.newText
-            this.rerenderEntireTree()
-        }
     }
 }
 
@@ -133,7 +120,7 @@ export type MessageType = {
 export type MessagePage = {
     dialogs: DialogsType[];
     message: MessageType[];
-    newMessage: string
+    newMessageBody: string
 }
 
 export type SideBar = {

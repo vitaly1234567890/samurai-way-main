@@ -3,19 +3,20 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import {store} from "./redux/State";
+import { BrowserRouter } from 'react-router-dom';
 
 
 
 export const rerenderEntireTree = () => {
     // @ts-ignore
     ReactDOM.render(
+        <BrowserRouter>
         <App state={store.getState()}
              message={store._state.profilePage.newPostText}
-             addMessage={store.addMessage.bind(store)}
-             messageText={store._state.messagePage.newMessage}
-             updateMessage={store.updateMessage.bind(store)}
+             messageText={store._state.messagePage.newMessageBody}
              dispatch={store.dispatch.bind(store)}
-        />,
+        />
+        </BrowserRouter>,
 
         document.getElementById('root')
     );
