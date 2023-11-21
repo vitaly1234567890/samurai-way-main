@@ -2,25 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import {store} from "./redux/State";
 import { BrowserRouter } from 'react-router-dom';
+import {store} from "./redux/redux-store";
+import {State} from "./redux/state";
+import { Provider } from 'react-redux';
 
-
-
-export const rerenderEntireTree = () => {
+export const rerenderEntireTree = (state: State) => {
     // @ts-ignore
     ReactDOM.render(
         <BrowserRouter>
-        <App state={store.getState()}
-             message={store._state.profilePage.newPostText}
-             messageText={store._state.messagePage.newMessageBody}
-             dispatch={store.dispatch.bind(store)}
-        />
+            <Provider store={store} >
+                    <App />
+            </Provider>
         </BrowserRouter>,
 
         document.getElementById('root')
     );
 }
 
-rerenderEntireTree()
-store.subscribe(rerenderEntireTree)
+rerenderEntireTree(store.getState())
