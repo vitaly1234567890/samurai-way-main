@@ -2,6 +2,8 @@ export type ActionsTypes =
     ReturnType<typeof followAC>
     | ReturnType<typeof unfollowAC>
     | ReturnType<typeof setUserAC>
+    | ReturnType<typeof setCurrentPageAC>
+    | ReturnType<typeof setUsersTotalCountAC>
 
 
 export type UserLocation = {
@@ -12,22 +14,33 @@ export type UserLocation = {
 export type UsersType = {
     location: UserLocation;
     id: number
-    fullName: string
+    name: string
     status: string
     folowed: boolean
-    photoUrl: string
+    photos: {
+        small: string
+        large: string
+    }
 }
 
 export type UsersPage = {
     users: UsersType[]
+    pageSize: number
+    totalUsersCount: number
+    currentPage: number
 }
 
 const FOLLOW = "FOLLOW"
 const UNFOLLOW = "UNFOLLOW"
 const SET_USERS = "SET-USERS"
+const SET_CURRENT_PAGE = "SET_CURRENT_PAGE"
+const SET_USERS_TOTAL_COUNT = "SET_USERS_TOTAL_COUNT"
 
 let initialState = {
-    users: []
+    users: [],
+    pageSize: 5,
+    totalUsersCount: 0,
+    currentPage: 1
 }
 
 export const usersReducer = (state: UsersPage = initialState, action: ActionsTypes) => {
@@ -45,7 +58,13 @@ export const usersReducer = (state: UsersPage = initialState, action: ActionsTyp
             }
         }
         case SET_USERS: {
-            return {...state, users: [...state.users, ...action.users]}
+            return {...state, users: action.users}
+        }
+        case SET_CURRENT_PAGE: {
+            return {...state, currentPage: action.currentPage}
+        }
+        case SET_USERS_TOTAL_COUNT: {
+            return {...state, totalUsersCount: action.count}
         }
         default:
             return state
@@ -70,6 +89,19 @@ export const setUserAC = (users: UsersType[]) => {
     return {
         type: SET_USERS,
         users
+    } as const
+}
+
+export const setCurrentPageAC = (currentPage: number) => {
+    return {
+        type: SET_CURRENT_PAGE,
+        currentPage
+    } as const
+}
+export const setUsersTotalCountAC = (totalUsersCount: number) => {
+    return {
+        type: SET_USERS_TOTAL_COUNT,
+        count: totalUsersCount
     } as const
 }
 

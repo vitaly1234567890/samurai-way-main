@@ -1,72 +1,64 @@
 import React from 'react';
+import styles from "./users.module.css";
+import userPhoto from "../../assets/images/image.png";
 import {UsersType} from "../../redux/users-reducer";
-import styles from './users.module.css'
 
 type UsersPropsType = {
- users: UsersType[]
+    users: UsersType[]
     follow: (userId: number) => void
     unfollow: (userId: number) => void
-    setUsers: (users: UsersType[]) => void
+    pageSize: number
+    totalUsersCount: number
+    currentPage: number
+    onPageChanged: (pageNumber: number) => void
 }
 
 export const Users = (props: UsersPropsType) => {
 
-    if (props.users.length === 0) {
-        props.setUsers( [
-                {
-                    id: 1,
-                    photoUrl: 'http://images11.domashnyochag.ru/upload/img_cache/eb2/eb269ad628964fc57f136091a7eb4c9d_cropped_1200x752.jpg',
-                    folowed: true,
-                    fullName: 'Dmitry',
-                    status: "I am a boss",
-                    location: {city: 'Minsk', country: 'Belarus'}
-                },
-                {
-                    id: 2,
-                    photoUrl: 'http://images11.domashnyochag.ru/upload/img_cache/eb2/eb269ad628964fc57f136091a7eb4c9d_cropped_1200x752.jpg',
-                    folowed: false,
-                    fullName: 'Sasha',
-                    status: "I am a boss too",
-                    location: {city: 'Moscow', country: 'Russia'}
-                },
-                {
-                    id: 3,
-                    photoUrl: 'http://images11.domashnyochag.ru/upload/img_cache/eb2/eb269ad628964fc57f136091a7eb4c9d_cropped_1200x752.jpg',
-                    folowed: false,
-                    fullName: 'Andrew',
-                    status: "I am a boss too",
-                    location: {city: 'Kiev', country: 'Ukraine'}
-                },
-            ]
-        )
+    let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize)
+    let pages = []
+
+    for (let i=1; i <= pagesCount; i++){
+        pages.push(i)
     }
 
     return (
         <div>
+            <div>
+                {pages.map(p => {
+                    return <span className={props.currentPage === p ? styles.selectedPage : ""}
+                                 onClick={() => props.onPageChanged(p)}
+                    >{p}</span>
+                })}
+            </div>
             {
-                props.users.map(u=>
+                props.users.map(u =>
                     <div key={u.id}>
                     <span>
                         <div>
-                            <img src={u.photoUrl} className={styles.userPhoto} alt=""/>
+                            <img src={u.photos.small !== null ? u.photos.small : userPhoto} className={styles.userPhoto}
+                                 alt=""/>
                         </div>
                         <div>
-                            { u.folowed ?
-                                <button onClick={()=> {props.unfollow(u.id)}}>unfollow</button> :
-                                <button onClick={()=> {props.follow(u.id)}}>Follow</button>}
-
+                            {u.folowed ?
+                                <button onClick={() => {
+                                    props.unfollow(u.id)
+                                }}>unfollow</button> :
+                                <button onClick={() => {
+                                    props.follow(u.id)
+                                }}>Follow</button>}
                         </div>
                     </span>
 
-                    <span>
-                        <div>{u.fullName}</div>
+                        <span>
+                        <div>{u.name}</div>
                         <div>{u.status}</div>
                     </span>
-                    <span>
-                        <div>{u.location.country}</div>
-                        <div>{u.location.city}</div>
+                        <span>
+                        <div>{"u.location.country"}</div>
+                        <div>{"u.location.city"}</div>
                     </span>
-                </div>)
+                    </div>)
             }
         </div>
     );
