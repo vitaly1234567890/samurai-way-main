@@ -1,13 +1,11 @@
 import React, {ChangeEvent} from 'react';
 import s from './MyPosts.module.css'
 import {Posts} from "./post/Post";
-import {ProfilePage} from "../../../redux/state";
-
-
+import {ProfilePage} from "../../../redux/profile-reducer";
 
 type MyPostsProps = {
     posts: ProfilePage
-    addPost: () => void
+    addPost: (newPostText:string) => void
     onPostChange: (e: ChangeEvent<HTMLTextAreaElement>) => void
 }
 
@@ -17,7 +15,7 @@ export const MyPosts = (props: MyPostsProps) => {
     )
 
     const addPost = () => {
-        props.addPost()
+        props.addPost(props.posts.newPostText)
     }
 
     const onPostChange = (e: ChangeEvent<HTMLTextAreaElement>) => {

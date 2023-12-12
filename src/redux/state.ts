@@ -1,4 +1,4 @@
-import profileReducer, {addPostActionCreator, changeNewTextActionCreator} from "./profile-reducer";
+import profileReducer, {addPostActionCreator, changeNewTextActionCreator, ProfilePage} from "./profile-reducer";
 import dialogsReducer, {sendMessageActionCreator, updateNewMessageBodyActionCreator} from "./dialog-reducer";
 import sidebarReducer from "./sidebar-reducer";
 
@@ -28,7 +28,27 @@ export const store: StoreType = {
                 {id: 3, message: 'Where are you from?', likesCount: 5},
 
             ],
-            newPostText: ""
+            newPostText: "",
+            profile: {
+                userId: 2,
+                lookingForAJob: true,
+                lookingForAJobDescription: "",
+                fullName: "",
+                contacts: {
+                    github: "",
+                    vk: "",
+                    facebook: "",
+                    instagram: "",
+                    twitter: "",
+                    website: "",
+                    youtube: "",
+                    mainLink: "",
+                },
+                photos: {
+                    small: "",
+                    large: "",
+                }
+            }
         },
         messagePage: {
             dialogs: [
@@ -94,11 +114,6 @@ export type Post = {
     id: number
     message: string
     likesCount: number
-}
-
-export type ProfilePage = {
-    posts: Post[];
-    newPostText: string
 }
 
 export type State = {
