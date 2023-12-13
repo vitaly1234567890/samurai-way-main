@@ -4,7 +4,6 @@ import {MyPosts} from "./MyPosts";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import {StoreType} from "../../../redux/redux-store";
-import {store} from "../../../redux/state";
 
 type MapStateToPropsType = {
     posts: ProfilePage

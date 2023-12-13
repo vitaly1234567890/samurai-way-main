@@ -16,7 +16,7 @@ export type UsersType = {
     id: number
     name: string
     status: string
-    folowed: boolean
+    followed: boolean
     photos: {
         small: string
         large: string
@@ -39,7 +39,20 @@ const SET_USERS_TOTAL_COUNT = "SET_USERS_TOTAL_COUNT"
 const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING"
 
 let initialState = {
-    users: [],
+    users: [{
+        location: {
+            city: '',
+            country: '',
+        },
+        id: 1,
+        name: '',
+        status: '',
+        followed: false,
+        photos: {
+            small: '',
+            large: '',
+        }
+    }],
     pageSize: 5,
     totalUsersCount: 0,
     currentPage: 1,
@@ -51,13 +64,13 @@ export const usersReducer = (state: UsersPage = initialState, action: ActionsTyp
         case FOLLOW: {
             return {
                 ...state,
-                users: [...state.users.map(u => u.id === action.userId ? {...u, folowed: true} : u)]
+                users: [...state.users.map(u => u.id === action.userId ? {...u, followed: true} : u)]
             }
         }
         case UNFOLLOW: {
             return {
                 ...state,
-                users: [...state.users.map(u => u.id === action.userId ? {...u, folowed: false} : u)]
+                users: [...state.users.map(u => u.id === action.userId ? {...u, followed: false} : u)]
             }
         }
         case SET_USERS: {
