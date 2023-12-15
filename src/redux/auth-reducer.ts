@@ -5,14 +5,16 @@ export type ActionsTypes =
 const SET_USER_DATA = "SET_USER_DATA"
 
 export type authType = {
-    data:{
-        id: number
-        email: string
-        login: string
-    }
+    data: dataType
     resultCode: number
     messages: string[]
     isAuth: boolean
+}
+
+export type dataType = {
+    id: number
+    email: string
+    login: string
 }
 
 let initialState = {
@@ -39,7 +41,7 @@ export const authReducer = (state: authType = initialState, action: ActionsTypes
     }
 }
 
-export const setAuthUserData = (data: authType) => {
+export const setAuthUserData = (data: dataType) => {
     return {
         type: SET_USER_DATA,
         data

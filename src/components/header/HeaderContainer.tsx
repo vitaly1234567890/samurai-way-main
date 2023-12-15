@@ -1,13 +1,14 @@
 import React from 'react';
 import {Header} from "./Header";
 import {connect} from "react-redux";
-import {authType, setAuthUserData} from "../../redux/auth-reducer";
+import {dataType, setAuthUserData} from "../../redux/auth-reducer";
 import {usersAPI} from "../../api/api";
+import {StoreType} from "../../redux/redux-store";
 
 type HeaderContainertype = {
     isAuth: boolean
     login: string
-    setAuthUserData: (data: authType)=> void
+    setAuthUserData: (data: dataType)=> void
 }
 
 class HeaderContainer extends React.Component<HeaderContainertype, HeaderContainertype> {
@@ -30,7 +31,7 @@ type mapStateToPropsType = {
     login: string
 }
 
-const mapStateToProps = (state: any): mapStateToPropsType  => {
+const mapStateToProps = (state: StoreType): mapStateToPropsType  => {
     return {
         isAuth: state.auth.isAuth,
         login: state.auth.data.login
