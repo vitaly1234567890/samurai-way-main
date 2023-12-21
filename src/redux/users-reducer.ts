@@ -1,3 +1,6 @@
+import {usersAPI} from "../api/api";
+import {Dispatch} from "redux";
+
 export type ActionsTypes =
     ReturnType<typeof followAC>
     | ReturnType<typeof unfollowAC>
@@ -149,4 +152,37 @@ export const toggleIsFollowingProgressAC = (followingInProgress: number[], userI
         isFetching
     } as const
 }
+
+export const getUsersThunk = (currentPage: number, pageSize: number) => (dispatch: Dispatch) => {
+    dispatch(toggleIsFetchingAC(true))
+    usersAPI.getUsers(currentPage, pageSize)
+        .then(data => {
+            dispatch(toggleIsFetchingAC(false))
+            dispatch(setUserAC(data.items))
+            dispatch(setUsersTotalCountAC(data.totalCount))
+        })
+}
+
+export const followThunk = (userId: number) => (dispatch: Dispatch) => {
+    dispatch(toggleIsFollowingProgressAC([], userId, true))
+    usersAPI.followUsers(userId)
+        .then(data => {
+            if (data.resultCode === 0) {
+                dispatch(followAC(userId))
+            }
+            dispatch(toggleIsFollowingProgressAC([], userId, false))
+        })
+}
+
+export const unfollowThunk = (userId: number) => (dispatch: Dispatch) => {
+    dispatch(toggleIsFollowingProgressAC([], userId, true))
+    usersAPI.unfollowUsers(userId)
+        .then(data => {
+            if (data.resultCode === 0) {
+                dispatch(unfollowAC(userId))
+            }
+            dispatch(toggleIsFollowingProgressAC([], userId, false))
+        })
+}
+
 export default usersReducer

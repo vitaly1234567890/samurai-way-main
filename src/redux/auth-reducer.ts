@@ -1,3 +1,6 @@
+import {Dispatch} from "redux";
+import {usersAPI} from "../api/api";
+
 export type ActionsTypes =
     ReturnType<typeof setAuthUserData>
 
@@ -46,6 +49,15 @@ export const setAuthUserData = (data: dataType) => {
         type: SET_USER_DATA,
         data
     } as const
+}
+
+export const getAuthUserDataThunk = () => (dispatch: Dispatch) => {
+    usersAPI.getUsersHeader()
+        .then(data => {
+            if (data.resultCode === 0) {
+               dispatch(setAuthUserData(data.data))
+            }
+        })
 }
 
 

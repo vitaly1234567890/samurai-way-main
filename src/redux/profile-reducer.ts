@@ -1,4 +1,6 @@
 import {sendMessageActionCreator, updateNewMessageBodyActionCreator} from "./dialog-reducer";
+import {Dispatch} from "redux";
+import {usersAPI} from "../api/api";
 
 export type ActionsTypes =
     ReturnType<typeof addPostActionCreator>
@@ -111,5 +113,13 @@ export const setUserProfile = (profile: ProfileUser) => {
         profile
     } as const
 }
+
+export const getUsersProfileThunk = (userId: string) => (dispatch: Dispatch) => {
+    usersAPI.getUsersProfile(userId)
+        .then(data => {
+           dispatch(setUserProfile(data))
+        })
+}
+
 
 export default profileReducer
