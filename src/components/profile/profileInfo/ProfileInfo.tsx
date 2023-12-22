@@ -2,6 +2,8 @@ import React from 'react';
 import classes from './ProfileInfo.module.css'
 import {Preloader} from "../../common/Preloader/Preloader";
 import {ProfileUser} from "../../../redux/profile-reducer";
+import ProfileStatus from "./ProfileStatus";
+
 
 type ProfileInfoType = {
     profile: ProfileUser
@@ -23,6 +25,7 @@ export const ProfileInfo = (props: ProfileInfoType) => {
             <div>
                 {props.profile.fullName}
             </div>
+            <ProfileStatus status={'Hello'} />
         </div>
     );
 };
