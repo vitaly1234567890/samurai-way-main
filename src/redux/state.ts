@@ -48,7 +48,8 @@ export const store: StoreType = {
                     small: "",
                     large: "",
                 }
-            }
+            },
+            status: ''
         },
         messagePage: {
             dialogs: [

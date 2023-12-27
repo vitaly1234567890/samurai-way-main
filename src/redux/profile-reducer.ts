@@ -1,13 +1,14 @@
 import {sendMessageActionCreator, updateNewMessageBodyActionCreator} from "./dialog-reducer";
 import {Dispatch} from "redux";
-import {usersAPI} from "../api/api";
+import {profileAPI, usersAPI} from "../api/api";
 
 export type ActionsTypes =
     ReturnType<typeof addPostActionCreator>
     | ReturnType<typeof changeNewTextActionCreator>
     | ReturnType<typeof updateNewMessageBodyActionCreator>
     | ReturnType<typeof sendMessageActionCreator>
-    | ReturnType<typeof setUserProfile>;
+    | ReturnType<typeof setUserProfile>
+    | ReturnType<typeof setStatus>
 
 export type Post = {
     id: number
@@ -19,6 +20,7 @@ export type ProfilePage = {
     posts: Post[];
     newPostText: string
     profile: ProfileUser
+    status: string
 }
 
 export type ProfileUser = {
@@ -45,6 +47,7 @@ export type ProfileUser = {
 const ADD_POST = "ADD-POST"
 const CHANGE_NEW_TEXT = "CHANGE-NEW-TEXT"
 const SET_USER_PROFILE = "SET_USER_PROFILE"
+const SET_STATUS = "SET_STATUS"
 
 let initialState = {
     posts: [
@@ -72,7 +75,8 @@ let initialState = {
             small: "",
             large: "",
         }
-    }
+    },
+    status: ''
 }
 
 const profileReducer = (state: ProfilePage = initialState, action: ActionsTypes) => {
@@ -85,6 +89,9 @@ const profileReducer = (state: ProfilePage = initialState, action: ActionsTypes)
         }
         case CHANGE_NEW_TEXT: {
             return {...state, newPostText: action.newText}
+        }
+        case SET_STATUS: {
+            return {...state, status: action.status}
         }
         case SET_USER_PROFILE: {
             return {...state, profile: action.profile}
@@ -114,6 +121,13 @@ export const setUserProfile = (profile: ProfileUser) => {
     } as const
 }
 
+export const setStatus = (status:string) => {
+    return {
+        type: SET_STATUS,
+        status
+    } as const
+}
+
 export const getUsersProfileThunk = (userId: string) => (dispatch: Dispatch) => {
     usersAPI.getUsersProfile(userId)
         .then(data => {
@@ -121,5 +135,21 @@ export const getUsersProfileThunk = (userId: string) => (dispatch: Dispatch) => 
         })
 }
 
+export const getUserStatus = (userId: string) => (dispatch: Dispatch) => {
+
+    profileAPI.getStatus(userId)
+        .then(response => {
+            dispatch(setStatus(response.data))
+        })
+}
+
+export const updateStatus = (status: string) => (dispatch: Dispatch) => {
+    profileAPI.updateStatus(status)
+        .then(response => {
+            if (response.data.resultCode === 0) {
+                dispatch(setStatus(status))
+            }
+        })
+}
 
 export default profileReducer
