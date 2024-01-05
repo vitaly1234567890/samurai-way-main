@@ -1,5 +1,5 @@
-import profileReducer, {addPostActionCreator, changeNewTextActionCreator, ProfilePage} from "./profile-reducer";
-import dialogsReducer, {sendMessageActionCreator, updateNewMessageBodyActionCreator} from "./dialog-reducer";
+import profileReducer, {addPostActionCreator, ProfilePage} from "./profile-reducer";
+import dialogsReducer, {sendMessageActionCreator} from "./dialog-reducer";
 import sidebarReducer from "./sidebar-reducer";
 
 export type StoreType = {
@@ -14,8 +14,6 @@ export type StoreType = {
 
 export type ActionsTypes =
     ReturnType<typeof addPostActionCreator>
-    | ReturnType<typeof changeNewTextActionCreator>
-    | ReturnType<typeof updateNewMessageBodyActionCreator>
     | ReturnType<typeof sendMessageActionCreator>
 
 
@@ -28,7 +26,6 @@ export const store: StoreType = {
                 {id: 3, message: 'Where are you from?', likesCount: 5},
 
             ],
-            newPostText: "",
             profile: {
                 userId: 2,
                 lookingForAJob: true,
@@ -66,7 +63,6 @@ export const store: StoreType = {
                 {id: 3, message: 'Hello!'},
                 {id: 4, message: 'yo'},
             ],
-            newMessageBody: ""
         },
 
         sideBar: {
@@ -84,15 +80,10 @@ export const store: StoreType = {
         console.log("State is here")
     },
     addMessage() {
-        const newMessage: MessageType = {
-            id: 5, message: this._state.messagePage.newMessageBody
-        }
-        this._state.messagePage.message.push(newMessage)
-        this._state.messagePage.newMessageBody = ""
+        this._state.messagePage.message.push()
         this.rerenderEntireTree()
     },
     updateMessage(newMes: string) {
-        this._state.messagePage.newMessageBody = newMes
         this.rerenderEntireTree()
     },
     subscribe(observer) {
@@ -136,7 +127,6 @@ export type MessageType = {
 export type MessagePage = {
     dialogs: DialogsType[];
     message: MessageType[];
-    newMessageBody: string
 }
 
 export type SideBar = {

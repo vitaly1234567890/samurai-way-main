@@ -1,5 +1,5 @@
-import React, {ChangeEvent} from 'react';
-import {MessagePage, sendMessageActionCreator, updateNewMessageBodyActionCreator} from "../../redux/dialog-reducer";
+import React from 'react';
+import {MessagePage, sendMessageActionCreator} from "../../redux/dialog-reducer";
 import {Dialogs} from "./Dialogs";
 import {connect} from "react-redux";
 import {compose, Dispatch} from "redux";
@@ -11,8 +11,7 @@ type MapStatePropsType = {
 }
 
 type MapDispatchPropsType = {
-    onChangeMessage: (e: ChangeEvent<HTMLTextAreaElement>)=> void
-    addMessage: ()=> void
+    addMessage: (newMessageBody: string)=> void
 }
 
 let mapStateToProps = (state: StoreType): MapStatePropsType => {
@@ -23,11 +22,8 @@ let mapStateToProps = (state: StoreType): MapStatePropsType => {
 
 let mapDispatchToProps = (dispatch: Dispatch): MapDispatchPropsType => {
     return {
-        onChangeMessage: (e: ChangeEvent<HTMLTextAreaElement>)=> {
-            dispatch(updateNewMessageBodyActionCreator(e.currentTarget.value))
-        },
-        addMessage: ()=> {
-            dispatch(sendMessageActionCreator())
+        addMessage: (newMessageBody: string)=> {
+            dispatch(sendMessageActionCreator(newMessageBody))
         }
     }
 }
