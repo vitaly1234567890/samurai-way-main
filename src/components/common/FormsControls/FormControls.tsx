@@ -2,10 +2,6 @@ import React from "react";
 import styles from "./FormControls.module.css"
 import {FieldMetaProps} from "formik";
 
-const FormControl = () => {
-
-}
-
 type TextareaProps = {
     input: React.TextareaHTMLAttributes<HTMLTextAreaElement>;
     meta: FieldMetaProps<any>;
