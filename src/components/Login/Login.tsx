@@ -2,6 +2,11 @@ import React from 'react';
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {Input} from "../common/FormsControls/FormControls";
 import {maxLengthCreator, required} from "../../utils/validators/validators";
+import {connect} from "react-redux";
+import {login} from "../../redux/auth-reducer";
+import {Redirect} from "react-router-dom";
+import {StoreType} from "../../redux/redux-store";
+import style from "./../common/FormsControls/FormControls.module.css"
 
 type FormDataType = {
     login: string
@@ -9,7 +14,7 @@ type FormDataType = {
     rememberMe: boolean
 }
 
-const maxLength10 = maxLengthCreator(10)
+const maxLength10 = maxLengthCreator(50)
 
 export const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
     return (
@@ -30,8 +35,11 @@ export const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
                 />
             </div>
             <div>
-                <Field  name={'rememberMe'} type={'checkbox'} component={Input}/> remember me
+                <Field name={'rememberMe'} type={'checkbox'} component={Input}/> remember me
             </div>
+            {props.error && <div className={style.formSummaryError}>
+                {props.error}
+            </div>}
             <div>
                 <button>Login</button>
             </div>
@@ -41,11 +49,17 @@ export const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
 
 const LoginReduxForm = reduxForm<FormDataType>({
     form: 'login'
-}) (LoginForm)
+})(LoginForm)
 
-export const Login = () => {
+type Logintype = MapStatePropsType & MapDispatchToProps
+
+const Login = (props: Logintype) => {
     const onSubmit = (formData: FormDataType) => {
-        console.log(formData)
+        props.login(formData.login, formData.password, formData.rememberMe)
+    }
+
+    if (props.isAuth) {
+        return <Redirect to={"/profile"}/>
     }
 
     return <div>
@@ -53,4 +67,17 @@ export const Login = () => {
         <LoginReduxForm onSubmit={onSubmit}/>
     </div>
 };
+
+type MapStatePropsType = {
+    isAuth: boolean
+}
+
+type MapDispatchToProps = {
+    login: (login: string, password: string, rememberMe: boolean) => void
+}
+const mapStateToProps = (state: StoreType): MapStatePropsType => ({
+    isAuth: state.auth.data.isAuth
+})
+
+export default connect(mapStateToProps, {login})(Login)
 

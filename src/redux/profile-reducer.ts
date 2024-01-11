@@ -114,14 +114,14 @@ export const setStatus = (status:string) => {
     } as const
 }
 
-export const getUsersProfileThunk = (userId: string) => (dispatch: Dispatch) => {
+export const getUsersProfileThunk = (userId: number) => (dispatch: Dispatch) => {
     usersAPI.getUsersProfile(userId)
         .then(data => {
            dispatch(setUserProfile(data))
         })
 }
 
-export const getUserStatus = (userId: string) => (dispatch: Dispatch) => {
+export const getUserStatus = (userId: number) => (dispatch: Dispatch) => {
 
     profileAPI.getStatus(userId)
         .then(response => {

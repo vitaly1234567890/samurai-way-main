@@ -80,7 +80,6 @@ let mapStateToProps = (state: StoreType): mapStateToPropsType => {
 }
 
 export default compose<React.ComponentType>(
-    withAuthRedirect,
     connect(mapStateToProps,
         {
             follow: followAC, unfollow: unfollowAC, setCurrentPage: setCurrentPageAC,

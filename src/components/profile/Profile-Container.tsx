@@ -15,28 +15,31 @@ import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 type MapStatePropsType = {
     profile: ProfileUser
     status: string
+    authorizedUserId: number
+    isAuth: boolean
 }
 
 type MapDispatchPropsType = {
-    getUsersProfileThunk: (userId: string) => void
-    getUserStatus: (userId: string) => void
+    getUsersProfileThunk: (userId: number) => void
+    getUserStatus: (userId: number) => void
     updateStatus: (status: string) => void
 }
 
 type OwnPropsType = MapStatePropsType & MapDispatchPropsType
 
 type PathParamsType = {
-    userId: string
+    userId: number
 }
 
-type PropsType = RouteComponentProps<PathParamsType> & OwnPropsType
+type PropsType = RouteComponentProps<any> & OwnPropsType
 
 class ProfileContainer extends React.Component<PropsType, ProfilePage> {
 
     componentDidMount() {
         let userId = this.props.match.params.userId
         if(!userId){
-            userId = '30314'
+            userId = this.props.authorizedUserId
+
         }
         this.props.getUsersProfileThunk(userId)
         this.props.getUserStatus(userId)
@@ -45,7 +48,9 @@ class ProfileContainer extends React.Component<PropsType, ProfilePage> {
     render() {
         return (
             <div>
-                <Profile profile={this.props.profile} status={this.props.status} updateStatus={this.props.updateStatus}/>
+                <Profile profile={this.props.profile}
+                         status={this.props.status}
+                         updateStatus={this.props.updateStatus}/>
             </div>
         );
     }
@@ -55,6 +60,8 @@ let mapStateToProps = (state: StoreType): MapStatePropsType => {
     return {
         profile: state.profilePage.profile,
         status: state.profilePage.status,
+        authorizedUserId: state.auth.data.id,
+        isAuth: state.auth.data.isAuth
     }
 }
 
