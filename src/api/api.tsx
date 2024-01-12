@@ -20,7 +20,6 @@ export const usersAPI = {
             .then(res => res.data)
     },
     getUsersProfile (userId: number) {
-        console.warn('Obsolete method. Please profileAPI object')
         return profileAPI.getUsersProfile(userId)
     }
 }

@@ -1,4 +1,3 @@
-import {Dispatch} from "redux";
 import {getAuthUserDataThunk} from "./auth-reducer";
 
 export type ActionsTypes =
