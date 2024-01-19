@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import s from './MyPosts.module.css'
 import {Posts} from "./post/Post";
 import {ProfilePage} from "../../../redux/profile-reducer";
@@ -11,7 +11,8 @@ type MyPostsProps = {
     addPost: (newPostText: string) => void
 }
 
-export const MyPosts = (props: MyPostsProps) => {
+export const MyPosts = memo( (props: MyPostsProps) => {
+    console.log("render")
     let postsElements = props.posts.posts.map(l =>
         <Posts key={l.id} posts={l}/>
     )
@@ -29,7 +30,7 @@ export const MyPosts = (props: MyPostsProps) => {
             </div>
         </div>
     );
-};
+});
 
 
 type AddNewPostFormType = {
