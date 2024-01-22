@@ -34,6 +34,7 @@ type UsersPropsType = {
     getUsersThunk: (currentPage: number, pageSize: number) => void
     unfollowThunk: (userId: number) => void
     followThunk: (userId: number) => void
+    user: UsersType
 }
 
 export class UsersContainer extends React.Component<UsersPropsType, UsersPropsType> {

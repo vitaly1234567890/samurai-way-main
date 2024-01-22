@@ -1,6 +1,6 @@
 import React from 'react';
-import {Field, InjectedFormProps, reduxForm} from "redux-form";
-import {Input} from "../common/FormsControls/FormControls";
+import {InjectedFormProps, reduxForm} from "redux-form";
+import {createField, Input} from "../common/FormsControls/FormControls";
 import {maxLengthCreator, required} from "../../utils/validators/validators";
 import {connect} from "react-redux";
 import {login} from "../../redux/auth-reducer";
@@ -16,29 +16,19 @@ type FormDataType = {
 
 const maxLength10 = maxLengthCreator(50)
 
-export const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
+export const LoginForm: React.FC<InjectedFormProps<FormDataType>> = ({handleSubmit, error}) => {
     return (
-        <form onSubmit={props.handleSubmit}>
-            <div>
-                <Field placeholder={'Login'}
-                       name={'login'}
-                       component={Input}
-                       validate={[required, maxLength10]}
-                />
-            </div>
-            <div>
-                <Field placeholder={'Password'}
-                       type={'password'}
-                       name={'password'}
-                       component={Input}
-                       validate={[required, maxLength10]}
-                />
-            </div>
-            <div>
-                <Field name={'rememberMe'} type={'checkbox'} component={Input}/> remember me
-            </div>
-            {props.error && <div className={style.formSummaryError}>
-                {props.error}
+        <form onSubmit={handleSubmit}>
+            {createField({
+                component: Input, name: 'login', placeholder: 'Login', validate: [required, maxLength10]
+            })}
+            {createField({
+                component: Input, name: 'password', placeholder: 'Password', validate: [required, maxLength10],
+                type: 'password',
+            })}
+            {createField({component: Input, name: 'rememberMe', type: 'checkbox', label: 'Remember me'})}
+            {error && <div className={style.formSummaryError}>
+                {error}
             </div>}
             <div>
                 <button>Login</button>
