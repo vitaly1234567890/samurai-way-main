@@ -1,5 +1,6 @@
 import {usersAPI} from "../api/api";
 import {Dispatch} from "redux";
+import {AppThunk} from "./redux-store";
 
 export type ActionsTypes =
     ReturnType<typeof followAC>
@@ -171,11 +172,11 @@ const followUnfollowFlow = async (dispatch: Dispatch, userId: number, apiMethod:
     dispatch(toggleIsFollowingProgressAC([], userId, false))
 }
 
-export const followThunk = (userId: number) => async (dispatch: Dispatch) => {
+export const followThunk = (userId: number): AppThunk => async (dispatch) => {
     followUnfollowFlow(dispatch, userId, usersAPI.followUsers.bind(usersAPI), followAC)
 }
 
-export const unfollowThunk = (userId: number) => async (dispatch: Dispatch) => {
+export const unfollowThunk = (userId: number): AppThunk => async (dispatch) => {
     followUnfollowFlow(dispatch, userId, usersAPI.unfollowUsers.bind(usersAPI), unfollowAC)
 }
 

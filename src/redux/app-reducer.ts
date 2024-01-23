@@ -1,4 +1,5 @@
 import {getAuthUserDataThunk} from "./auth-reducer";
+import {AppThunk} from "./redux-store";
 
 export type ActionsTypes =
     ReturnType<typeof initializedSuccess>
@@ -32,7 +33,7 @@ export const initializedSuccess = () => {
     } as const
 }
 
-export const initializeApp = () => (dispatch: any) => {
+export const initializeApp = (): AppThunk => (dispatch) => {
    let promise = dispatch(getAuthUserDataThunk())
     Promise.all([promise])
         .then(() => {

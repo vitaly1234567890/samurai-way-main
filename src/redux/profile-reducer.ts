@@ -1,6 +1,6 @@
 import {sendMessageActionCreator} from "./dialog-reducer";
-import {Dispatch} from "redux";
 import {profileAPI, usersAPI} from "../api/api";
+import {AppThunk} from "./redux-store";
 
 export type ActionsTypes =
     ReturnType<typeof addPostActionCreator>
@@ -126,17 +126,17 @@ export const deletePost = (postId: number) => {
     } as const
 }
 
-export const getUsersProfileThunk = (userId: number) => async (dispatch: Dispatch) => {
+export const getUsersProfileThunk = (userId: number): AppThunk => async (dispatch) => {
     const data = await usersAPI.getUsersProfile(userId)
     dispatch(setUserProfile(data))
 }
 
-export const getUserStatus = (userId: number) => async (dispatch: Dispatch) => {
+export const getUserStatus = (userId: number): AppThunk => async (dispatch) => {
     const response = await profileAPI.getStatus(userId)
     dispatch(setStatus(response.data))
 }
 
-export const updateStatus = (status: string) => async (dispatch: Dispatch) => {
+export const updateStatus = (status: string): AppThunk => async (dispatch) => {
     const response = await profileAPI.updateStatus(status)
     if (response.data.resultCode === 0) {
         dispatch(setStatus(status))

@@ -1,6 +1,6 @@
-import {Dispatch} from "redux";
 import {authAPI} from "../api/api";
 import {stopSubmit} from "redux-form";
+import {AppThunk} from "./redux-store";
 
 export type ActionsTypes =
     ReturnType<typeof setAuthUserData>
@@ -50,7 +50,7 @@ export const setAuthUserData = (id: number, email: string, login: string, isAuth
     } as const
 }
 
-export const getAuthUserDataThunk = () => async (dispatch: Dispatch) => {
+export const getAuthUserDataThunk = (): AppThunk => async (dispatch) => {
     let res = await authAPI.getUsersHeader()
     if (res.resultCode === 0) {
         let {id, login, email} = res.data
@@ -58,7 +58,7 @@ export const getAuthUserDataThunk = () => async (dispatch: Dispatch) => {
     }
 }
 
-export const login = (email: string, password: string, rememberMe: boolean) => async (dispatch: any) => {
+export const login = (email: string, password: string, rememberMe: boolean): AppThunk => async (dispatch) => {
     let response = await authAPI.login(email, password, rememberMe)
     if (response.data.resultCode === 0) {
         dispatch(getAuthUserDataThunk())
@@ -68,7 +68,7 @@ export const login = (email: string, password: string, rememberMe: boolean) => a
     }
 }
 
-export const logout = () => async (dispatch: Dispatch) => {
+export const logout = (): AppThunk => async (dispatch) => {
     let response = await authAPI.logout()
     if (response.data.resultCode === 0) {
         dispatch(setAuthUserData(0, '', '', false))
