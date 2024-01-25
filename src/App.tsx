@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, {Component, Suspense} from 'react';
 import './App.css';
 import {NavBar} from "./components/navBar/NavBar";
 import {Route} from "react-router-dom";
-import {DialogsContainer} from "./components/dialogs/DialogsContainer";
+// import {DialogsContainer} from "./components/dialogs/DialogsContainer";
 import UsersContainer from "./components/Users/UsersContainer";
-import ProfileContainer from "./components/profile/Profile-Container";
+// import ProfileContainer from "./components/profile/Profile-Container";
 import HeaderContainer from "./components/header/HeaderContainer";
 import Login from "./components/Login/Login";
 import {connect} from "react-redux";
@@ -14,10 +14,14 @@ import {initializeApp} from "./redux/app-reducer";
 import {StoreType} from "./redux/redux-store";
 import {Preloader} from "./components/common/Preloader/Preloader";
 
+const DialogsContainer = React.lazy(() => import('./components/dialogs/DialogsContainer'));
+const ProfileContainer = React.lazy(() => import('./components/profile/Profile-Container'));
+
 type AppType = {
     initializeApp: () => void
     initialized: boolean
 }
+
 class App extends Component<AppType> {
     componentDidMount() {
         this.props.initializeApp()
@@ -25,17 +29,25 @@ class App extends Component<AppType> {
 
     render() {
         if (!this.props.initialized) {
-            return <Preloader />
+            return <Preloader/>
         }
 
         return (
             <div className='app-wrapper'>
-                <HeaderContainer />
+                <HeaderContainer/>
                 <NavBar/>
                 <div className={'app-wrapper-content'}>
-                    <Route path="/dialogs" render={() => <DialogsContainer/>}/>
+                    <Route path="/dialogs" render={() => {
+                        return <Suspense fallback={<Preloader/>}>
+                            <DialogsContainer/>
+                        </Suspense>
+                    }}/>
                     <Route path="/profile/:userId?"
-                           render={() => <ProfileContainer/>}/>
+                           render={() => {
+                               return <Suspense fallback={<Preloader/>}>
+                                   <ProfileContainer/>
+                               </Suspense>
+                           }}/>
                     <Route path="/users" render={() => <UsersContainer/>}/>
                     <Route path="/login" render={() => <Login/>}/>
                     {/*<Route path="/news" component={News}/>*/}
@@ -52,7 +64,7 @@ const mapStateToProps = (state: StoreType) => ({
 })
 export default compose<React.ComponentType>(
     withRouter,
-    connect(mapStateToProps, {initializeApp})) (App)
+    connect(mapStateToProps, {initializeApp}))(App)
 
 
 
