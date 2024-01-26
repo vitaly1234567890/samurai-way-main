@@ -1,5 +1,5 @@
 import {sendMessageActionCreator} from "./dialog-reducer";
-import {profileAPI, usersAPI} from "../api/api";
+import {photoType, profileAPI, usersAPI} from "../api/api";
 import {AppThunk} from "./redux-store";
 
 export type ActionsTypes =
@@ -8,6 +8,7 @@ export type ActionsTypes =
     | ReturnType<typeof setUserProfile>
     | ReturnType<typeof setStatus>
     | ReturnType<typeof deletePost>
+    | ReturnType<typeof savePhotoSuccess>
 
 export type Post = {
     id: number
@@ -46,6 +47,7 @@ const ADD_POST = "ADD-POST"
 const SET_USER_PROFILE = "SET_USER_PROFILE"
 const SET_STATUS = "SET_STATUS"
 const DELETE_POST = "DELETE_POST"
+const SAVE_PHOTO_SUCCESS = "SAVE_PHOTO_SUCCESS"
 
 let initialState = {
     posts: [
@@ -93,6 +95,9 @@ const profileReducer = (state: ProfilePage = initialState, action: ActionsTypes)
         case DELETE_POST: {
             return {...state, posts: state.posts.filter(p => p.id !== action.postId)}
         }
+        case SAVE_PHOTO_SUCCESS: {
+            return {...state, profile: {...state.profile, photos: action.photos}}
+        }
         default:
             return state
     }
@@ -126,6 +131,13 @@ export const deletePost = (postId: number) => {
     } as const
 }
 
+export const savePhotoSuccess = (photos: photoType) => {
+    return {
+        type: SAVE_PHOTO_SUCCESS,
+        photos
+    } as const
+}
+
 export const getUsersProfileThunk = (userId: number): AppThunk => async (dispatch) => {
     const data = await usersAPI.getUsersProfile(userId)
     dispatch(setUserProfile(data))
@@ -140,6 +152,13 @@ export const updateStatus = (status: string): AppThunk => async (dispatch) => {
     const response = await profileAPI.updateStatus(status)
     if (response.data.resultCode === 0) {
         dispatch(setStatus(status))
+    }
+}
+
+export const savePhoto = (file: string): AppThunk => async (dispatch) => {
+    const response = await profileAPI.savePhoto(file)
+    if (response.data.resultCode === 0) {
+        dispatch(savePhotoSuccess(response.data.data.photos))
     }
 }
 

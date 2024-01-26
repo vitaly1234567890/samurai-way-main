@@ -10,16 +10,17 @@ const instance = axios.create({
 export const usersAPI = {
     getUsers(currentPage: number = 1, pageSize: number = 10) {
         return instance.get(`users?page=${currentPage}&count=${pageSize}`)
-            .then(res => res.data)},
+            .then(res => res.data)
+    },
     unfollowUsers(id: number) {
-       return instance.delete(`follow/${id}`)
-           .then(res => res.data)
+        return instance.delete(`follow/${id}`)
+            .then(res => res.data)
     },
     followUsers(id: number) {
         return instance.post(`follow/${id}`, {})
             .then(res => res.data)
     },
-    getUsersProfile (userId: number) {
+    getUsersProfile(userId: number) {
         return profileAPI.getUsersProfile(userId)
     }
 }
@@ -35,10 +36,19 @@ export const profileAPI = {
     updateStatus(status: string) {
         return instance.put(`profile/status/`, {status})
     },
+    savePhoto(photoFile: string) {
+        const formData = new FormData()
+        formData.append('image', photoFile)
+        return instance.put<getPhotoType>('/profile/photo/', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+    }
 }
 
 export const authAPI = {
-    getUsersHeader(){
+    getUsersHeader() {
         return instance.get(`auth/me`)
             .then(res => res.data)
 
@@ -51,6 +61,20 @@ export const authAPI = {
         return instance.delete(`auth/login`)
     },
 }
+
+export type photoType = {
+    small: string
+    large: string
+}
+
+export type getPhotoType = {
+    data: {
+        photos: photoType
+    }
+    resultCode: number
+    messages: string[]
+}
+
 
 
 
