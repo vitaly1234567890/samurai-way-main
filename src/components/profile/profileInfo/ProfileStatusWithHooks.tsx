@@ -30,7 +30,7 @@ export const ProfileStatusWithHooks: React.FC<ProfileStatusType> = ({status, upd
         <div>
             {!editMode &&
                 <div>
-                    <span onDoubleClick={activeEditMode}>{status || "-----"}</span>
+                    <b>Status</b>: <span onDoubleClick={activeEditMode}>{status || "-----"}</span>
                 </div>
             }
             {editMode &&

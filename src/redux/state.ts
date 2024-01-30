@@ -27,6 +27,7 @@ export const store: StoreType = {
 
             ],
             profile: {
+                aboutMe: '',
                 userId: 2,
                 lookingForAJob: true,
                 lookingForAJobDescription: "",

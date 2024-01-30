@@ -1,6 +1,7 @@
 import {sendMessageActionCreator} from "./dialog-reducer";
 import {photoType, profileAPI, usersAPI} from "../api/api";
 import {AppThunk} from "./redux-store";
+import {stopSubmit} from "redux-form";
 
 export type ActionsTypes =
     ReturnType<typeof addPostActionCreator>
@@ -23,20 +24,14 @@ export type ProfilePage = {
 }
 
 export type ProfileUser = {
+    aboutMe: string
     userId: number
     lookingForAJob: boolean
     lookingForAJobDescription: string
     fullName: string
     contacts: {
-        github: string
-        vk: string
-        facebook: string
-        instagram: string
-        twitter: string
-        website: string
-        youtube: string
-        mainLink: string
-    }
+        [key: string]: string; // Индексная сигнатура для объекта contacts
+    };
     photos: {
         small: string
         large: string
@@ -56,6 +51,7 @@ let initialState = {
         {id: 3, message: 'Where are you from?', likesCount: 5},
     ],
     profile: {
+        aboutMe: '',
         userId: 2,
         lookingForAJob: true,
         lookingForAJobDescription: "",
@@ -161,5 +157,24 @@ export const savePhoto = (file: string): AppThunk => async (dispatch) => {
         dispatch(savePhotoSuccess(response.data.data.photos))
     }
 }
+
+export const saveProfile = (profile: ProfileUser): AppThunk => async (dispatch) => {
+    try {
+        const response = await profileAPI.saveProfile(profile);
+        if (response.data.resultCode === 0) {
+            dispatch(setUserProfile(profile));
+        } else {
+            const errors: { [key: string]: string } = {};
+            response.data.messages.forEach((message: string) => {
+                const fieldName = message.toLowerCase().split('->')[1].slice(0, -1).trim();
+                errors[fieldName] = message;
+            });
+            dispatch(stopSubmit('edit-profile',{'contacts': errors} ));
+            return Promise.reject(response.data.messages[0])
+        }
+    } catch (error) {
+        // Обработка других ошибок, если не связанных с формой
+    }
+};
 
 export default profileReducer

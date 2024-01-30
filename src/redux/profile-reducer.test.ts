@@ -7,6 +7,7 @@ let state = {
         {id: 3, message: 'Where are you from?', likesCount: 5},
     ],
     profile: {
+        aboutMe: '',
         userId: 2,
         lookingForAJob: true,
         lookingForAJobDescription: "",

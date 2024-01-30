@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import {ProfileUser} from "../redux/profile-reducer";
 
 const instance = axios.create({
     withCredentials: true,
@@ -44,6 +44,9 @@ export const profileAPI = {
                 'Content-Type': 'multipart/form-data'
             }
         })
+    },
+    saveProfile(profile: ProfileUser) {
+        return instance.put(`profile`, profile)
     }
 }
 
@@ -62,6 +65,7 @@ export const authAPI = {
     },
 }
 
+// Type
 export type photoType = {
     small: string
     large: string
@@ -74,6 +78,7 @@ export type getPhotoType = {
     resultCode: number
     messages: string[]
 }
+
 
 
 
