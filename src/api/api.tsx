@@ -10,15 +10,12 @@ const instance = axios.create({
 export const usersAPI = {
     getUsers(currentPage: number = 1, pageSize: number = 10) {
         return instance.get(`users?page=${currentPage}&count=${pageSize}`)
-            .then(res => res.data)
     },
     unfollowUsers(id: number) {
         return instance.delete(`follow/${id}`)
-            .then(res => res.data)
     },
     followUsers(id: number) {
         return instance.post(`follow/${id}`, {})
-            .then(res => res.data)
     },
     getUsersProfile(userId: number) {
         return profileAPI.getUsersProfile(userId)
@@ -28,7 +25,6 @@ export const usersAPI = {
 export const profileAPI = {
     getUsersProfile(userId: number) {
         return instance.get(`profile/${userId}`)
-            .then(res => res.data)
     },
     getStatus(userId: number) {
         return instance.get(`profile/status/${userId}`)
@@ -53,15 +49,18 @@ export const profileAPI = {
 export const authAPI = {
     getUsersHeader() {
         return instance.get(`auth/me`)
-            .then(res => res.data)
-
-
     },
-    login(email: string, password: string, rememberMe: boolean) {
-        return instance.post(`auth/login`, {email, password, rememberMe})
+    login(email: string, password: string, rememberMe: boolean, captcha?: string) {
+        return instance.post(`auth/login`, {email, password, rememberMe, captcha})
     },
     logout() {
         return instance.delete(`auth/login`)
+    },
+}
+
+export const securityAPI = {
+    getCaptchaUrl() {
+        return instance.get(`security/get-captcha-url`)
     },
 }
 

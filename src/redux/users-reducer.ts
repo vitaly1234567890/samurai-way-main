@@ -157,27 +157,27 @@ export const toggleIsFollowingProgressAC = (followingInProgress: number[], userI
 export const getUsersThunk = (currentPage: number, pageSize: number) => async (dispatch: Dispatch) => {
     dispatch(toggleIsFetchingAC(true))
     dispatch(setCurrentPageAC(currentPage))
-    const data = await usersAPI.getUsers(currentPage, pageSize)
+    const res = await usersAPI.getUsers(currentPage, pageSize)
     dispatch(toggleIsFetchingAC(false))
-    dispatch(setUserAC(data.items))
-    dispatch(setUsersTotalCountAC(data.totalCount))
+    dispatch(setUserAC(res.data.items))
+    dispatch(setUsersTotalCountAC(res.data.totalCount))
 }
 
 const followUnfollowFlow = async (dispatch: Dispatch, userId: number, apiMethod: any, actionCreator: any) => {
     dispatch(toggleIsFollowingProgressAC([], userId, true))
-    const data = await apiMethod(userId)
-    if (data.resultCode === 0) {
+    const res = await apiMethod(userId)
+    if (res.data.resultCode === 0) {
         dispatch(actionCreator(userId))
     }
     dispatch(toggleIsFollowingProgressAC([], userId, false))
 }
 
 export const followThunk = (userId: number): AppThunk => async (dispatch) => {
-    followUnfollowFlow(dispatch, userId, usersAPI.followUsers.bind(usersAPI), followAC)
+   await followUnfollowFlow(dispatch, userId, usersAPI.followUsers.bind(usersAPI), followAC)
 }
 
 export const unfollowThunk = (userId: number): AppThunk => async (dispatch) => {
-    followUnfollowFlow(dispatch, userId, usersAPI.unfollowUsers.bind(usersAPI), unfollowAC)
+   await followUnfollowFlow(dispatch, userId, usersAPI.unfollowUsers.bind(usersAPI), unfollowAC)
 }
 
 export default usersReducer

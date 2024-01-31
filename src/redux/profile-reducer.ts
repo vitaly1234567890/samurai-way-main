@@ -135,8 +135,8 @@ export const savePhotoSuccess = (photos: photoType) => {
 }
 
 export const getUsersProfileThunk = (userId: number): AppThunk => async (dispatch) => {
-    const data = await usersAPI.getUsersProfile(userId)
-    dispatch(setUserProfile(data))
+    const res = await usersAPI.getUsersProfile(userId)
+    dispatch(setUserProfile(res.data))
 }
 
 export const getUserStatus = (userId: number): AppThunk => async (dispatch) => {
