@@ -15,12 +15,10 @@ type FormDataType = {
     captcha: string
 }
 
-
 const maxLength10 = maxLengthCreator(50)
 
-export const LoginForm: React.FC<InjectedFormProps<FormDataType> & {captchaUrl:string} > =
-    ({ handleSubmit, error,captchaUrl}) => {
-
+export const LoginForm: React.FC<InjectedFormProps<FormDataType> & { captchaUrl: string }> =
+    ({handleSubmit, error, captchaUrl}) => {
         return (
             <form onSubmit={handleSubmit}>
                 {createField({
@@ -32,8 +30,7 @@ export const LoginForm: React.FC<InjectedFormProps<FormDataType> & {captchaUrl:s
                 })}
                 {createField({component: Input, name: 'rememberMe', type: 'checkbox', label: 'Remember me'})}
 
-
-                {captchaUrl && <img src={captchaUrl} alt="Captcha" />}
+                {captchaUrl && <img src={captchaUrl} alt="Captcha"/>}
                 {captchaUrl &&
                     createField({
                         component: Input, name: 'captcha', placeholder: 'Symbols from image', validate: [required]
@@ -49,7 +46,7 @@ export const LoginForm: React.FC<InjectedFormProps<FormDataType> & {captchaUrl:s
         )
     };
 
-const LoginReduxForm = reduxForm<FormDataType,any>({
+const LoginReduxForm = reduxForm<FormDataType, any>({
     form: 'login'
 })(LoginForm);
 

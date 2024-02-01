@@ -52,6 +52,7 @@ class App extends Component<AppType> {
                     {/*<Route path="/news" component={News}/>*/}
                     {/*<Route path="/profile" component={Music}/>*/}
                     {/*<Route path="/profile" component={Settings}/>*/}
+                    <Route path="/*" render={() => <div>Error 404</div>} />
                 </div>
             </div>
         );
