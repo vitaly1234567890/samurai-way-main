@@ -1,7 +1,7 @@
 import React, {Component, Suspense} from 'react';
 import './App.css';
 import {NavBar} from "./components/navBar/NavBar";
-import {Route} from "react-router-dom";
+import {Redirect, Route} from "react-router-dom";
 import UsersContainer from "./components/Users/UsersContainer";
 import HeaderContainer from "./components/header/HeaderContainer";
 import Login from "./components/Login/Login";
@@ -22,8 +22,15 @@ type AppType = {
 }
 
 class App extends Component<AppType> {
+    catchAllUnhandledErrors = (promiseRejectionEvent: Event) => {
+        alert(promiseRejectionEvent)
+    }
     componentDidMount() {
         this.props.initializeApp()
+        window.addEventListener("unhandledrejection", this.catchAllUnhandledErrors)
+    }
+    componentWillUnmount() {
+        window.removeEventListener("unhandledrejection", this.catchAllUnhandledErrors)
     }
 
     render() {
@@ -36,6 +43,7 @@ class App extends Component<AppType> {
                 <HeaderContainer/>
                 <NavBar/>
                 <div className={'app-wrapper-content'}>
+                    <Route path="/" render={() => <Redirect to={"/profile"}/>}/>
                     <Route path="/dialogs" render={() => {
                         return <Suspense fallback={<Preloader/>}>
                             <DialogsContainer/>
@@ -50,9 +58,9 @@ class App extends Component<AppType> {
                     <Route path="/users" render={() => <UsersContainer/>}/>
                     <Route path="/login" render={() => <Login/>}/>
                     {/*<Route path="/news" component={News}/>*/}
-                    {/*<Route path="/profile" component={Music}/>*/}
-                    {/*<Route path="/profile" component={Settings}/>*/}
-                    <Route path="/*" render={() => <div>Error 404</div>} />
+                    {/*<Route path="/music" component={Music}/>*/}
+                    {/*<Route path="/settings" component={Settings}/>*/}
+                    <Route path="/*" render={() => <div>Error 404</div>}/>
                 </div>
             </div>
         );

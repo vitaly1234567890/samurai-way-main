@@ -12,7 +12,6 @@ type MyPostsProps = {
 }
 
 export const MyPosts = memo( (props: MyPostsProps) => {
-    console.log("render")
     let postsElements = props.posts.posts.map(l =>
         <Posts key={l.id} posts={l}/>
     )
