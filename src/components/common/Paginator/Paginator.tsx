@@ -42,7 +42,5 @@ export const Paginator = (props: UsersPropsType) => {
             {portionCount > portionNumber &&
                 <button onClick={() => setPortionNumber(portionNumber + 1)}>NEXT</button>}
         </div>
-
-
     );
 };
