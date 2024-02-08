@@ -1,7 +1,7 @@
 import React, {Component, Suspense} from 'react';
 import './App.css';
 import {NavBar} from "./components/navBar/NavBar";
-import {Redirect, Route} from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 import UsersContainer from "./components/Users/UsersContainer";
 import HeaderContainer from "./components/header/HeaderContainer";
 import Login from "./components/Login/Login";
@@ -43,24 +43,28 @@ class App extends Component<AppType> {
                 <HeaderContainer/>
                 <NavBar/>
                 <div className={'app-wrapper-content'}>
-                    <Route path="/" render={() => <Redirect to={"/profile"}/>}/>
-                    <Route path="/dialogs" render={() => {
-                        return <Suspense fallback={<Preloader/>}>
-                            <DialogsContainer/>
-                        </Suspense>
-                    }}/>
-                    <Route path="/profile/:userId?"
-                           render={() => {
-                               return <Suspense fallback={<Preloader/>}>
-                                   <ProfileContainer/>
-                               </Suspense>
-                           }}/>
-                    <Route path="/users" render={() => <UsersContainer/>}/>
-                    <Route path="/login" render={() => <Login/>}/>
-                    {/*<Route path="/news" component={News}/>*/}
-                    {/*<Route path="/music" component={Music}/>*/}
-                    {/*<Route path="/settings" component={Settings}/>*/}
-                    <Route path="/*" render={() => <div>Error 404</div>}/>
+                    <Switch>
+                        {/*<Route path="/" render={() => <Redirect to={"/profile"}/>}/>*/}
+                        <Route path="/dialogs" render={() => {
+                            return <Suspense fallback={<Preloader/>}>
+                                <DialogsContainer/>
+                            </Suspense>
+                        }}/>
+                        <Route path="/profile/:userId?"
+                               render={() => {
+                                   return <Suspense fallback={<Preloader/>}>
+                                       <ProfileContainer/>
+                                   </Suspense>
+                               }}/>
+
+                        <Route path="/users" render={() => <UsersContainer/>}/>
+                        <Route path="/login" render={() => <Login/>}/>
+                        {/*<Route path="/news" component={News}/>*/}
+                        {/*<Route path="/music" component={Music}/>*/}
+                        {/*<Route path="/settings" component={Settings}/>*/}
+                        <Route path="/*" render={() => <div>Error 404</div>}/>
+                    </Switch>
+
                 </div>
             </div>
         );
