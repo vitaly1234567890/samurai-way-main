@@ -1,7 +1,7 @@
 import React, {Component, Suspense} from 'react';
 import './App.css';
 import {NavBar} from "./components/navBar/NavBar";
-import {Route, Switch} from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 import UsersContainer from "./components/Users/UsersContainer";
 import HeaderContainer from "./components/header/HeaderContainer";
 import Login from "./components/Login/Login";
@@ -11,6 +11,7 @@ import {compose} from "redux";
 import {initializeApp} from "./redux/app-reducer";
 import {StoreType} from "./redux/redux-store";
 import {Preloader} from "./components/common/Preloader/Preloader";
+import {News} from "./components/common/news/news";
 
 
 const DialogsContainer = React.lazy(() => import('./components/dialogs/DialogsContainer'));
@@ -25,10 +26,12 @@ class App extends Component<AppType> {
     catchAllUnhandledErrors = (promiseRejectionEvent: Event) => {
         alert(promiseRejectionEvent)
     }
+
     componentDidMount() {
         this.props.initializeApp()
         window.addEventListener("unhandledrejection", this.catchAllUnhandledErrors)
     }
+
     componentWillUnmount() {
         window.removeEventListener("unhandledrejection", this.catchAllUnhandledErrors)
     }
@@ -45,26 +48,24 @@ class App extends Component<AppType> {
                 <div className={'app-wrapper-content'}>
                     <Switch>
                         {/*<Route path="/" render={() => <Redirect to={"/profile"}/>}/>*/}
-                        <Route path="/dialogs" render={() => {
-                            return <Suspense fallback={<Preloader/>}>
-                                <DialogsContainer/>
-                            </Suspense>
-                        }}/>
                         <Route path="/profile/:userId?"
                                render={() => {
                                    return <Suspense fallback={<Preloader/>}>
                                        <ProfileContainer/>
                                    </Suspense>
                                }}/>
-
+                        <Route path="/dialogs" render={() => {
+                            return <Suspense fallback={<Preloader/>}>
+                                <DialogsContainer/>
+                            </Suspense>
+                        }}/>
                         <Route path="/users" render={() => <UsersContainer/>}/>
                         <Route path="/login" render={() => <Login/>}/>
-                        {/*<Route path="/news" component={News}/>*/}
+                        <Route path="/news" render={() => <News/>}/>
                         {/*<Route path="/music" component={Music}/>*/}
                         {/*<Route path="/settings" component={Settings}/>*/}
                         <Route path="/*" render={() => <div>Error 404</div>}/>
                     </Switch>
-
                 </div>
             </div>
         );
