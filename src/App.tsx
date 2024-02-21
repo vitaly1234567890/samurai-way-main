@@ -11,7 +11,8 @@ import {compose} from "redux";
 import {initializeApp} from "./redux/app-reducer";
 import {StoreType} from "./redux/redux-store";
 import {Preloader} from "./components/common/Preloader/Preloader";
-import {News} from "./components/common/news/news";
+import {News} from "./components/news/news";
+import {Music} from "./components/Music/music";
 
 
 const DialogsContainer = React.lazy(() => import('./components/dialogs/DialogsContainer'));
@@ -47,7 +48,7 @@ class App extends Component<AppType> {
                 <NavBar/>
                 <div className={'app-wrapper-content'}>
                     <Switch>
-                        {/*<Route path="/" render={() => <Redirect to={"/profile"}/>}/>*/}
+                        <Route exact path="/" render={() => <Redirect to="/profile" />} />
                         <Route path="/profile/:userId?"
                                render={() => {
                                    return <Suspense fallback={<Preloader/>}>
@@ -62,9 +63,9 @@ class App extends Component<AppType> {
                         <Route path="/users" render={() => <UsersContainer/>}/>
                         <Route path="/login" render={() => <Login/>}/>
                         <Route path="/news" render={() => <News/>}/>
-                        {/*<Route path="/music" component={Music}/>*/}
+                        <Route path="/music" render={() => <Music/>}/>
                         {/*<Route path="/settings" component={Settings}/>*/}
-                        <Route path="/*" render={() => <div>Error 404</div>}/>
+                        <Route path="*" render={() => <div>Error 404</div>}/>
                     </Switch>
                 </div>
             </div>
