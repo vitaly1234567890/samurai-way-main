@@ -5,7 +5,10 @@ import {Field} from "redux-form";
 
 type TextareaProps = {
     input: React.TextareaHTMLAttributes<HTMLTextAreaElement>;
-    meta: FieldMetaProps<any>;
+    meta: {
+        touched: boolean,
+        error: string
+    }
 };
 export const Textarea: React.FC<TextareaProps> = ({input, meta: {touched, error}, ...props}) => {
     const hasError = touched && error

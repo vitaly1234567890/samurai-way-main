@@ -48,7 +48,7 @@ class App extends Component<AppType> {
                 <NavBar/>
                 <div className={'app-wrapper-content'}>
                     <Switch>
-                        <Route exact path="/" render={() => <Redirect to="/profile" />} />
+                        <Route exact path={["/", "/samurai-way-main"]} render={() => <Redirect to="/profile" />} />
                         <Route path="/profile/:userId?"
                                render={() => {
                                    return <Suspense fallback={<Preloader/>}>
