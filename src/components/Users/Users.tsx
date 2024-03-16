@@ -1,7 +1,8 @@
 import React from 'react';
 import {UsersType} from "../../redux/users-reducer";
-import {Paginator} from "../common/Paginator/Paginator";
 import {User} from "./User";
+import {Pagination} from "../common/pagination";
+import s from "./users.module.css"
 
 type UsersPropsType = {
     users: UsersType[]
@@ -26,10 +27,11 @@ export const Users: React.FC<UsersPropsType> = ({
                                                     unfollowThunk,
                                                     followThunk,
                                                 }) => {
+
+    const count = Math.ceil(totalUsersCount / pageSize)
+
     return (
-        <div>
-            <Paginator pageSize={pageSize} totalItemCount={totalUsersCount}
-                       currentPage={currentPage} onPageChanged={onPageChanged} portionSize= {10}/>
+        <div className={s.usersRoot}>
             {
                 users.map(u => <User
                     key={u.id}
@@ -38,6 +40,17 @@ export const Users: React.FC<UsersPropsType> = ({
                     followThunk={followThunk}
                     unfollowThunk={unfollowThunk}/>
                 )}
+            <div className={s.pagination}>
+                <Pagination count={count}
+                            limit={pageSize}
+                            onChange={onPageChanged}
+                            page={currentPage}
+                            perPageOptions={[5, 10, 20, 50, 100]}
+                            perPage={pageSize}
+                            onPerPageChange={() => {
+                            }}
+                />
+            </div>
         </div>
     );
 };
