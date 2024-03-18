@@ -15,6 +15,7 @@ type UsersPropsType = {
     followThunk: (userId: number) => void
     follow: (userId: number) => void
     unfollow: (userId: number) => void
+    onPageSizeChanged: (pageSize: number | string) => void
 }
 
 export const Users: React.FC<UsersPropsType> = ({
@@ -26,6 +27,7 @@ export const Users: React.FC<UsersPropsType> = ({
                                                     followingInProgress,
                                                     unfollowThunk,
                                                     followThunk,
+                                                    onPageSizeChanged
                                                 }) => {
 
     const count = Math.ceil(totalUsersCount / pageSize)
@@ -47,8 +49,7 @@ export const Users: React.FC<UsersPropsType> = ({
                             page={currentPage}
                             perPageOptions={[5, 10, 20, 50, 100]}
                             perPage={pageSize}
-                            onPerPageChange={() => {
-                            }}
+                            onPerPageChange={onPageSizeChanged}
                 />
             </div>
         </div>

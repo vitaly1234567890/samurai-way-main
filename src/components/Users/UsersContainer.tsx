@@ -47,6 +47,10 @@ export class UsersContainer extends React.Component<UsersPropsType, UsersPropsTy
         this.props.setCurrentPage(pageNumber)
     }
 
+    onPageSizeChanged = (pageSize: number | string) => {
+        this.props.getUsersThunk(this.props.currentPage, +pageSize)
+    }
+
     render() {
         return <>
             {this.props.isFetching ?
@@ -63,6 +67,7 @@ export class UsersContainer extends React.Component<UsersPropsType, UsersPropsTy
                 followingInProgress={this.props.followingInProgress}
                 followThunk={this.props.followThunk}
                 unfollowThunk={this.props.unfollowThunk}
+                onPageSizeChanged={this.onPageSizeChanged}
             />
         </>
     }
